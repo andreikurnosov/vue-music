@@ -109,7 +109,6 @@
 <script>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import { auth, usersCollection } from '../includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -140,37 +139,17 @@ export default {
       regAlertVariant.value = 'bg-blue-500';
       regAlertMessage.value = 'Please wait! Your account is being created.';
 
-      let userCred = null;
-
       try {
-        userCred = await auth.createUserWithEmailAndPassword(values.email, values.password);
+        store.dispatch('registerUser', values);
       } catch (error) {
         regInSubmission.value = false;
         regAlertVariant.value = 'bg-red-500';
         regAlertMessage.value = 'An unexpected error occured. Please try again later.';
         return;
       }
-
-      try {
-        await usersCollection.add({
-          name: values.name,
-          email: values.email,
-          age: values.age,
-          country: values.country,
-        });
-      } catch (error) {
-        regInSubmission.value = false;
-        regAlertVariant.value = 'bg-red-500';
-        regAlertMessage.value = 'An unexpected error occured. Please try again later.';
-        return;
-      }
-
-      store.commit('toggleAuth');
 
       regAlertVariant.value = 'bg-green-500';
       regAlertMessage.value = 'Success! Your account has been created.';
-
-      console.log(userCred);
     };
 
     return {

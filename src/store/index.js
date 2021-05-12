@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import { auth, usersCollection } from '../includes/firebase';
 
 export default createStore({
   state: {
@@ -16,6 +17,20 @@ export default createStore({
     },
     toggleAuth(state) {
       state.userLoggedIn = !state.userLoggedIn;
+    },
+  },
+  actions: {
+    async registerUser({ commit }, values) {
+      await auth.createUserWithEmailAndPassword(values.email, values.password);
+
+      await usersCollection.add({
+        name: values.name,
+        email: values.email,
+        age: values.age,
+        country: values.country,
+      });
+
+      commit('toggleAuth');
     },
   },
 });
