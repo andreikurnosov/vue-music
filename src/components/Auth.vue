@@ -90,6 +90,7 @@
             v-show="tab === 'register'"
             @submit="register"
             :validation-schema="schema"
+            :initialValues="userData"
           >
             <!-- Name -->
             <div class="mb-3">
@@ -196,7 +197,6 @@
 <script>
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
-import { useForm } from 'vee-validate';
 
 export default {
   name: 'Auth',
@@ -216,10 +216,6 @@ export default {
       country: 'USA',
     };
 
-    useForm({
-      initialValues: userData,
-    });
-
     const store = useStore();
     const authModalShow = computed(() => store.getters.getAuthModalShow);
     const closeModal = () => store.commit('toggleAuthModal');
@@ -233,6 +229,7 @@ export default {
       tab,
       schema,
       register,
+      userData,
     };
   },
 };
