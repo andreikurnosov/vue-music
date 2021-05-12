@@ -108,7 +108,7 @@
 
 <script>
 import { ref } from 'vue';
-import firebase from '../includes/firebase';
+import { auth } from '../includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -132,7 +132,7 @@ export default {
       country: 'USA',
     };
 
-    const register = async (values) => {
+    const register = async values => {
       regShowAlert.value = true;
       regInSubmission.value = true;
       regAlertVariant.value = 'bg-blue-500';
@@ -141,9 +141,7 @@ export default {
       let userCred = null;
 
       try {
-        userCred = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(values.email, values.password);
+        userCred = await auth.createUserWithEmailAndPassword(values.email, values.password);
       } catch (error) {
         regInSubmission.value = false;
         regAlertVariant.value = 'bg-red-500';
