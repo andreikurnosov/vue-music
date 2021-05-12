@@ -6,11 +6,7 @@
   >
     {{ regAlertMessage }}
   </div>
-  <vee-form
-    @submit="register"
-    :validation-schema="schema"
-    :initialValues="userData"
-  >
+  <vee-form @submit="register" :validation-schema="schema" :initialValues="userData">
     <!-- Name -->
     <div class="mb-3">
       <label class="inline-block mb-2">Name</label>
@@ -112,6 +108,7 @@
 
 <script>
 import { ref } from 'vue';
+import firebase from '../includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -135,15 +132,29 @@ export default {
       country: 'USA',
     };
 
-    const register = (values) => {
+    const register = async (values) => {
       regShowAlert.value = true;
       regInSubmission.value = true;
       regAlertVariant.value = 'bg-blue-500';
       regAlertMessage.value = 'Please wait! Your account is being created.';
 
+      let userCred = null;
+
+      try {
+        userCred = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(values.email, values.password);
+      } catch (error) {
+        regInSubmission.value = false;
+        regAlertVariant.value = 'bg-red-500';
+        regAlertMessage.value = 'An unexpected error occured. Please try again later.';
+        return;
+      }
+
       regAlertVariant.value = 'bg-green-500';
       regAlertMessage.value = 'Success! Your account has been created.';
-      console.log(values);
+
+      console.log(userCred);
     };
 
     return {
