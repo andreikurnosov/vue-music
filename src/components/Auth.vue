@@ -86,7 +86,11 @@
             </button>
           </form>
           <!-- Registration Form -->
-          <vee-form v-show="tab === 'register'" :validation-schema="schema" @submit="register">
+          <vee-form
+            v-show="tab === 'register'"
+            @submit="register"
+            :validation-schema="schema"
+          >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
@@ -192,6 +196,7 @@
 <script>
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
+import { useForm } from 'vee-validate';
 
 export default {
   name: 'Auth',
@@ -205,6 +210,14 @@ export default {
       confirm_password: 'confirmed:@password',
       country: 'required|excluded:Antartica',
       tos: 'required',
+    });
+
+    const userData = {
+      country: 'USA',
+    };
+
+    useForm({
+      initialValues: userData,
     });
 
     const store = useStore();
