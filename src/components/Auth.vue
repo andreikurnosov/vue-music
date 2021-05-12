@@ -218,6 +218,7 @@ export default {
 
     const store = useStore();
     const authModalShow = computed(() => store.getters.getAuthModalShow);
+    // TODO: closing modal pressing Esc button
     const closeModal = () => store.commit('toggleAuthModal');
     const register = (values) => {
       console.log(values);
