@@ -86,6 +86,13 @@
             </button>
           </form>
           <!-- Registration Form -->
+          <div
+            class="text-white text-center font-bold p-5 mb-4"
+            v-if="regShowAlert"
+            :class="regAlertVariant"
+          >
+            {{ regAlertMessage }}
+          </div>
           <vee-form
             v-show="tab === 'register'"
             @submit="register"
@@ -181,6 +188,7 @@
               <error-message class="text-red-600 block" name="tos" />
             </div>
             <button
+              :disabled="regInSubmission"
               type="submit"
               class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition
                 hover:bg-purple-700"
@@ -212,6 +220,11 @@ export default {
       tos: 'tos',
     });
 
+    const regInSubmission = ref(false);
+    const regShowAlert = ref(false);
+    const regAlertVariant = ref('bg-blue-500');
+    const regAlertMessage = ref('Please wait! Your account is being created.');
+
     const userData = {
       country: 'USA',
     };
@@ -220,7 +233,15 @@ export default {
     const authModalShow = computed(() => store.getters.getAuthModalShow);
     // TODO: closing modal pressing Esc button
     const closeModal = () => store.commit('toggleAuthModal');
+
     const register = (values) => {
+      regShowAlert.value = true;
+      regInSubmission.value = true;
+      regAlertVariant.value = 'bg-blue-500';
+      regAlertMessage.value = 'Please wait! Your account is being created.';
+
+      regAlertVariant.value = 'bg-green-500';
+      regAlertMessage.value = 'Success! Your account has been created.';
       console.log(values);
     };
 
@@ -231,6 +252,10 @@ export default {
       schema,
       register,
       userData,
+      regInSubmission,
+      regShowAlert,
+      regAlertVariant,
+      regAlertMessage,
     };
   },
 };
