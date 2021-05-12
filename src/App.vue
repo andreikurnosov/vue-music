@@ -288,6 +288,7 @@
   <auth-modal />
 </template>
 <script>
+import { useStore } from 'vuex';
 import AppHeader from './components/Header.vue';
 import AuthModal from './components/Auth.vue';
 
@@ -296,6 +297,10 @@ export default {
   components: {
     AppHeader,
     AuthModal,
+  },
+  setup() {
+    const store = useStore();
+    store.dispatch('initLogin');
   },
 };
 </script>
