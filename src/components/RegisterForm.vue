@@ -108,11 +108,13 @@
 
 <script>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 import { auth, usersCollection } from '../includes/firebase';
 
 export default {
   name: 'RegisterForm',
   setup() {
+    const store = useStore();
     const schema = ref({
       name: 'required|min:3|max:100|alpha_spaces',
       email: 'required|min:3|max:100|email',
@@ -162,6 +164,8 @@ export default {
         regAlertMessage.value = 'An unexpected error occured. Please try again later.';
         return;
       }
+
+      store.commit('toggleAuth');
 
       regAlertVariant.value = 'bg-green-500';
       regAlertMessage.value = 'Success! Your account has been created.';
