@@ -31,7 +31,7 @@
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
           <div
-            class="transition-all progress-bar bg-blue-400"
+            class="transition-all progress-bar"
             :class="upload.variant"
             :style="{ width: upload.current_progress + '%' }"
           ></div>
@@ -69,15 +69,29 @@ export default {
           task,
           current_progress: 0,
           name: file.name,
-          variants: 'bg-blue-400',
+          variant: 'bg-blue-400',
           icon: 'fas fa-spinner fa-spin',
           text_class: '',
         }) - 1;
 
-        task.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          uploads.value[uploadIndex].current_progress = progress;
-        });
+        task.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            uploads.value[uploadIndex].current_progress = progress;
+          },
+          (error) => {
+            uploads.value[uploadIndex].variant = 'bg-red-400';
+            uploads.value[uploadIndex].icon = 'fas fa-times';
+            uploads.value[uploadIndex].text_class = 'text-red-400';
+            console.log(error);
+          },
+          () => {
+            uploads.value[uploadIndex].variant = 'bg-green-400';
+            uploads.value[uploadIndex].icon = 'fas fa-check';
+            uploads.value[uploadIndex].text_class = 'text-green-400';
+          },
+        );
       });
     };
 
