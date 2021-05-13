@@ -76,6 +76,7 @@ export default {
 
       loginAlertVariant.value = 'bg-green-500';
       loginAlertMessage.value = 'Succes! You are logged in.';
+      window.location.reload();
     };
 
     return {

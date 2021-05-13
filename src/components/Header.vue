@@ -9,14 +9,19 @@
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
+          <li v-if="!loggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal()"
               >Login / Register</a
             >
           </li>
-          <li>
-            <a class="px-2 text-white" href="#">Manage</a>
-          </li>
+          <template v-else>
+            <li>
+              <a class="px-2 text-white" href="#">Manage</a>
+            </li>
+            <li>
+              <a @click.prevent="signOut" class="px-2 text-white" href="#">Logout</a>
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -24,17 +29,27 @@
 </template>
 <script>
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
   name: 'Header',
   setup() {
     const store = useStore();
+
     function toggleAuthModal() {
       store.commit('toggleAuthModal');
     }
 
+    function signOut() {
+      store.dispatch('signOut');
+    }
+
+    const loggedIn = computed(() => store.state.userLoggedIn);
+
     return {
       toggleAuthModal,
+      loggedIn,
+      signOut,
     };
   },
 };
