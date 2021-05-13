@@ -35,7 +35,9 @@ export default createStore({
       });
 
       commit('toggleAuth');
+      commit('toggleAuthModal');
     },
+
     initLogin({ commit }) {
       const user = auth.currentUser;
 
@@ -48,6 +50,7 @@ export default createStore({
       await auth.signInWithEmailAndPassword(values.email, values.password);
 
       commit('toggleAuth');
+      commit('toggleAuthModal');
     },
 
     async signOut({ commit }) {

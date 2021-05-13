@@ -138,6 +138,7 @@ export default {
       regInSubmission.value = true;
       regAlertVariant.value = 'bg-blue-500';
       regAlertMessage.value = 'Please wait! Your account is being created.';
+      console.log(values);
 
       try {
         store.dispatch('registerUser', values);
@@ -150,7 +151,6 @@ export default {
 
       regAlertVariant.value = 'bg-green-500';
       regAlertMessage.value = 'Success! Your account has been created.';
-      window.location.reload();
     };
 
     return {
