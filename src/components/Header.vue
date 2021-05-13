@@ -14,7 +14,7 @@
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
           <li>
-            <router-link class="px-2 text-white" :to="{name: 'about'}">About</router-link>
+            <router-link class="px-2 text-white" :to="{ name: 'about' }">About</router-link>
           </li>
           <li v-if="!loggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal()"
@@ -31,18 +31,20 @@
           </template>
         </ul>
       </div>
-      i
     </nav>
   </header>
 </template>
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   name: 'Header',
   setup() {
     const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
 
     function toggleAuthModal() {
       store.commit('toggleAuthModal');
@@ -50,6 +52,10 @@ export default {
 
     function signOut() {
       store.dispatch('signOut');
+
+      if (route.name === 'manage') {
+        router.push({ name: 'home' });
+      }
     }
 
     const loggedIn = computed(() => store.state.userLoggedIn);
