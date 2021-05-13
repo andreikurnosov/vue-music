@@ -49,22 +49,26 @@
 
 <script>
 import { ref } from 'vue';
+import { storage } from '../includes/firebase';
 
 export default {
   name: 'upload',
   setup() {
     const isDragover = ref(false);
 
-    const upload = $event => {
+    const upload = ($event) => {
       isDragover.value = false;
 
-      const files = [...$event.dataTransfer];
+      const files = [...$event.dataTransfer.files];
 
-      files.forEach(file => {
+      files.forEach((file) => {
         if (file.type !== 'audio/mpeg') {
           return;
         }
-        console.log(files);
+
+        const storageRef = storage.ref();
+        const songsRef = storageRef.child(`songs/${file.name}`);
+        songsRef.put(file);
       });
     };
 
